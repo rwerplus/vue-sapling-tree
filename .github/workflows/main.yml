@@ -29,7 +29,6 @@ jobs:
           node-version: 18
       - run: yarn
       - run: yarn build
-      - run: yarn semantic-release
       - name: Publish to NPM
         run: npm publish || true
         env:
