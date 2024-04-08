@@ -2,6 +2,8 @@
 
 [![npm](https://img.shields.io/npm/dt/vue-sapling-tree.svg?style=flat-square)](https://github.com/rwerplus/vue-sapling-tree)
 
+![alt text](image.png)
+
 [English](./README.md)/[中文](./README-CN.md)
 
 ## Introduction
@@ -40,7 +42,7 @@ new Vue({ components: { VSaplingTree } })
 ## 简单示例
 
 ```ts
-    <v-sapling-tree :data="data" show-checkbox multiple allow-batch whole-row @item-click="itemClick"></v-sapling-tree>
+    <v-sapling-tree v-model:treeData="data" show-checkbox multiple allow-batch whole-row @item-click="itemClick"></v-sapling-tree>
 
     new Vue({
       data: {
@@ -127,7 +129,7 @@ new Vue({ components: { VSaplingTree } })
 
 | Props                      |   Type   |  Default   | Describe                                                                                                                     |
 | -------------------------- | :------: | :--------: | :--------------------------------------------------------------------------------------------------------------------------- |
-| data                       |  Array   |            | 设置树的数据源                                                                                                               |
+| treeData                   |  Array   |            | 设置树的数据源                                                                                                               |
 | size                       |  String  |            | 设置树节点的大小, 可选值 : 'large' or '' or ''small'                                                                         |
 | show-checkbox              | Boolean  |   false    | 设置是否显示选择框                                                                                                           |
 | allow-transition           | Boolean  |    true    | 设置是否允许使用过渡效果                                                                                                     |
@@ -191,7 +193,7 @@ new Vue({ components: { VSaplingTree } })
 ## 自定义树节点的例子
 
 ```ts
-<v-sapling-tree :data="data">
+<v-sapling-tree v-model:data="data">
   <template scope="_">
     <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
       <i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>
@@ -206,7 +208,7 @@ new Vue({ components: { VSaplingTree } })
 更优雅的操作方式:
 
 ```ts
-<v-sapling-tree :data="data">
+<v-sapling-tree v-model:data="data">
   <template scope="_">
     <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl" @click.exact="customItemClick(_.vm, _.model, $event)">
     <i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>

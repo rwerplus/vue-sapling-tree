@@ -2,6 +2,8 @@
 
 [![npm](https://img.shields.io/npm/dt/vue-sapling-tree.svg?style=flat-square)](https://github.com/rwerplus/vue-sapling-tree)
 
+![alt text](image.png)
+
 [English](./README.md)/[中文](./README-CN.md)
 
 ## TODO
@@ -50,7 +52,7 @@ npm install npm run dev
 ## Usage
 
 ```ts
-    <v-sapling-tree :data="data" show-checkbox multiple allow-batch whole-row @item-click="itemClick"></v-sapling-tree>
+    <v-sapling-tree v-model:treeData="data" show-checkbox multiple allow-batch whole-row @item-click="itemClick"></v-sapling-tree>
 
     new Vue({
       data: {
@@ -137,7 +139,7 @@ npm install npm run dev
 
 | Props                      |   Type   |  Default   | Describe                                                                                                                                    |
 | -------------------------- | :------: | :--------: | :------------------------------------------------------------------------------------------------------------------------------------------ |
-| data                       |  Array   |            | set tree data                                                                                                                               |
+| treeData                   |  Array   |            | set tree data                                                                                                                               |
 | size                       |  String  |            | set tree item size , value : 'large' or '' or ''small'                                                                                      |
 | show-checkbox              | Boolean  |   false    | set it show checkbox                                                                                                                        |
 | allow-transition           | Boolean  |    true    | allow use transition animation                                                                                                              |
@@ -201,7 +203,7 @@ npm install npm run dev
 ## Custom Item Example
 
 ```ts
-<v-sapling-tree :data="data">
+<v-sapling-tree v-model:treeData="data">
   <template scope="_">
     <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl">
       <i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>
@@ -216,7 +218,7 @@ npm install npm run dev
 more elegant:
 
 ```ts
-<v-sapling-tree :data="data">
+<v-sapling-tree v-model:treeData="data">
   <template scope="_">
     <div style="display: inherit; width: 200px" @click.ctrl="customItemClickWithCtrl" @click.exact="customItemClick(_.vm, _.model, $event)">
     <i :class="_.vm.themeIconClasses" role="presentation" v-if="!_.model.loading"></i>
