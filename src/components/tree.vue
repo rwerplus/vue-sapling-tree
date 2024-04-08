@@ -2,7 +2,8 @@
   <div :class="classes" role="tree" onselectstart="return false">
     <ul :class="containerClasses" role="group">
       <tree-item
-        v-for="(child, index) in data"
+        v-for="(child, index) in treeData"
+        ref="TreeItemGroup"
         :key="index"
         :data="child"
         :text-field-name="textFieldName"
@@ -13,7 +14,7 @@
         :show-checkbox="showCheckbox"
         :allow-transition="allowTransition"
         :height="sizeHeight"
-        :parent-item="data"
+        :parent-item="treeData"
         :draggable="draggable"
         :drag-over-background-color="dragOverBackgroundColor"
         :on-item-click="onItemClick"
@@ -21,7 +22,7 @@
         :on-item-drag-start="onItemDragStart"
         :on-item-drag-end="onItemDragEnd"
         :on-item-drop="onItemDrop"
-        :klass="index === data.length - 1 ? 'tree-last' : ''"
+        :klass="index === treeData.length - 1 ? 'tree-last' : ''"
       >
         <template v-slot="_">
           <slot :vm="_.vm" :model="_.model">
@@ -42,9 +43,9 @@ let ITEM_HEIGHT_DEFAULT = 24
 let ITEM_HEIGHT_LARGE = 32
 
 export default {
-  name: 'VJstree',
+  name: 'VueSaplingTree',
   props: {
-    data: { type: Array },
+    treeData: { type: Array },
     size: { type: String, validator: (value) => ['large', 'small'].indexOf(value) > -1 },
     showCheckbox: { type: Boolean, default: false },
     wholeRow: { type: Boolean, default: false },
@@ -68,6 +69,15 @@ export default {
     dragOverBackgroundColor: { type: String, default: '#C9FDC9' },
     klass: String,
   },
+  emits: [
+    'update:updateData',
+    'item-drop',
+    'item-toggle',
+    'item-drag-start',
+    'item-drag-end',
+    'item-drop-before',
+    'item-click',
+  ],
   data() {
     return {
       draggedItem: undefined,
@@ -75,6 +85,14 @@ export default {
     }
   },
   computed: {
+    dataDep: {
+      get() {
+        return this.treeData
+      },
+      set(value) {
+        this.$emit('update:updateData', value)
+      },
+    },
     classes() {
       return [
         { tree: true },
@@ -169,8 +187,9 @@ export default {
     },
     handleRecursionNodeChilds(node, func) {
       if (func(node) !== false) {
-        if (node.$children && node.$children.length > 0) {
-          for (let childNode of node.$children) {
+        const children = node.$refs.TreeItemGroup || []
+        if (children.length > 0) {
+          for (let childNode of children) {
             if (!childNode.disabled) {
               this.handleRecursionNodeChilds(childNode, func)
             }
@@ -216,7 +235,7 @@ export default {
       this.$emit('item-toggle', oriNode, oriItem, e)
     },
     handleAsyncLoad(oriParent, oriNode, oriItem) {
-      var self = this
+      const self = this
       if (this.async) {
         if (oriParent[0].loading) {
           this.async(oriNode, (data) => {
@@ -228,7 +247,7 @@ export default {
                   }
                 }
                 var dataItem = self.initializeDataItem(data[i])
-                self.$set(oriParent, i, dataItem)
+                oriParent[i] = dataItem
               }
             } else {
               oriNode.model[self.childrenFieldName] = []
@@ -285,12 +304,12 @@ export default {
     },
   },
   created() {
-    this.initializeData(this.data)
+    this.initializeData(this.dataDep)
   },
   mounted() {
     if (this.async) {
-      this.$set(this.data, 0, this.initializeLoading())
-      this.handleAsyncLoad(this.data, this)
+      this.dataDep[0] = this.initializeLoading()
+      this.handleAsyncLoad(this.dataDep, this)
     }
   },
   components: {
@@ -298,6 +317,6 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-@import './scss/style';
+<style lang="less">
+@import './less/style';
 </style>

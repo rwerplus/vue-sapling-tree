@@ -3,18 +3,18 @@
     role="treeitem"
     :class="classes"
     :draggable="draggable"
-    @dragstart.stop="onItemDragStart($event, _self, _self.model)"
-    @dragend.stop.prevent="onItemDragEnd($event, _self, _self.model)"
+    @dragstart.stop="onItemDragStart($event, self, self.model)"
+    @dragend.stop.prevent="onItemDragEnd($event, self, self.model)"
     @dragover.stop.prevent="isDragEnter = true"
     @dragenter.stop.prevent="isDragEnter = true"
     @dragleave.stop.prevent="isDragEnter = false"
-    @drop.stop.prevent="handleItemDrop($event, _self, _self.model)"
+    @drop.stop.prevent="handleItemDrop($event, self, self.model)"
   >
     <div role="presentation" :class="wholeRowClasses" v-if="isWholeRow">&nbsp;</div>
     <i class="tree-icon tree-ocl" role="presentation" @click="handleItemToggle"></i>
     <div :class="anchorClasses" v-on="events">
       <i class="tree-icon tree-checkbox" role="presentation" v-if="showCheckbox && !model.loading"></i>
-      <slot :vm="this" :model="model">
+      <slot :vm="self" :model="model">
         <i :class="themeIconClasses" role="presentation" v-if="!model.loading"></i>
         <span v-html="model[textFieldName]"></span>
       </slot>
@@ -22,6 +22,7 @@
     <ul role="group" ref="group" class="tree-children" v-if="isFolder" :style="groupStyle">
       <tree-item
         v-for="(child, index) in model[childrenFieldName]"
+        ref="TreeItemGroup"
         :key="index"
         :data="child"
         :text-field-name="textFieldName"
@@ -42,10 +43,10 @@
         :on-item-drop="onItemDrop"
         :klass="index === model[childrenFieldName].length - 1 ? 'tree-last' : ''"
       >
-        <template v-slot="_">
-          <slot :vm="_.vm" :model="_.model">
-            <i :class="_.vm.themeIconClasses" role="presentation" v-if="!model.loading"></i>
-            <span v-html="_.model[textFieldName]"></span>
+        <template #default="slotProps">
+          <slot :vm="slotProps.vm" :model="slotProps.model">
+            <i :class="slotProps.vm.themeIconClasses" role="presentation" v-if="!model.loading"></i>
+            <span v-html="slotProps.model[textFieldName]"></span>
           </slot>
         </template>
       </tree-item>
@@ -97,6 +98,7 @@ export default {
       model: this.data,
       maxHeight: 0,
       events: {},
+      self: this,
     }
   },
   watch: {
@@ -113,7 +115,9 @@ export default {
     'model.opened': {
       handler: function (val, oldVal) {
         this.onItemToggle(this, this.model)
-        this.handleGroupMaxHeight()
+        this.$nextTick(() => {
+          this.handleGroupMaxHeight()
+        })
       },
       deep: true,
     },
@@ -193,14 +197,17 @@ export default {
         let length = 0
         let childHeight = 0
         if (this.model.opened) {
-          length = this.$children.length
-          for (let children of this.$children) {
-            childHeight += children.maxHeight
+          const children = this.$refs.TreeItemGroup || []
+          length = children.length
+          for (let child of children) {
+            childHeight += child.maxHeight
           }
         }
         this.maxHeight = length * this.height + childHeight
-        if (this.$parent.$options._componentTag === 'tree-item') {
-          this.$parent.handleGroupMaxHeight()
+        if (this.$parent.$options.name === 'TreeItem') {
+          this.$nextTick(() => {
+            this.$parent.handleGroupMaxHeight()
+          })
         }
       }
     },
@@ -222,6 +229,7 @@ export default {
   },
   created() {
     const self = this
+    this.self = self
     const events = {
       click: this.handleItemClick,
       mouseover: this.handleItemMouseOver,
@@ -229,7 +237,7 @@ export default {
     }
     for (let itemEvent in this.itemEvents) {
       let itemEventCallback = this.itemEvents[itemEvent]
-      if (events.hasOwnProperty(itemEvent)) {
+      if (events[itemEvent]) {
         let eventCallback = events[itemEvent]
         events[itemEvent] = function (event) {
           eventCallback(self, self.model, event)
@@ -241,6 +249,7 @@ export default {
         }
       }
     }
+
     this.events = events
   },
   mounted() {

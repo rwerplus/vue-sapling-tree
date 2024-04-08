@@ -37,4 +37,11 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['vue'],
   },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
+  },
 })

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-textarea-mustache -->
 <template>
   <div id="app" style="padding-bottom: 300px">
     <img src="./assets/logo.png" />
@@ -9,7 +10,7 @@
           <p style="text-align: left">Search Text <input type="text" @keyup="inputKeyUp" v-model="searchText" /></p>
           <br />
           <VueSaplingTree
-            :data="data"
+            v-model:treeData="data"
             :item-events="itemEvents"
             show-checkbox
             multiple
@@ -31,6 +32,7 @@
         </div>
         <div style="width: 50%; display: inline-block">
           <textarea style="height: 300px; width: 100%">
+        // eslint-disable-next-line vue/no-textarea-mustache
         {{ data }}
       </textarea
           >
@@ -96,7 +98,7 @@
       <div style="width: 840px; margin: 0 auto">
         <div style="width: 49%; display: inline-block; vertical-align: top">
           <VueSaplingTree
-            :data="asyncData"
+            v-model:treeData="asyncData"
             :async="loadData"
             show-checkbox
             multiple
@@ -107,7 +109,7 @@
           ></VueSaplingTree>
         </div>
         <div style="width: 50%; display: inline-block; vertical-align: top">
-          <textarea style="height: 300px; width: 100%" v-model="asyncData"> </textarea>
+          <textarea style="height: 300px; width: 100%">{{ asyncData }}} </textarea>
         </div>
       </div>
     </div>
@@ -122,7 +124,7 @@
       <div style="width: 840px; margin: 0 auto">
         <div style="width: 49%; display: inline-block; vertical-align: top">
           <VueSaplingTree
-            :data="data"
+            v-model:treeData="data"
             :item-events="itemEvents"
             show-checkbox
             multiple
@@ -163,7 +165,7 @@
             <input type="text" v-model="filesToAdd" />
           </p>
           <VueSaplingTree
-            :data="data3"
+            v-model:treeData="data3"
             show-checkbox
             multiple
             allow-batch
@@ -186,7 +188,7 @@ export default {
   name: 'app',
   data() {
     return {
-      msg: 'A Tree Plugin For Vue2',
+      msg: 'A Tree Plugin For Vue3',
       searchText: '',
       editingItem: {},
       editingNode: null,
@@ -352,7 +354,7 @@ export default {
       ],
       asyncData: [],
       loadData: function (oriNode, resolve) {
-        var id = oriNode.data.id ? oriNode.data.id : 0
+        var id = oriNode?.data?.id ? oriNode?.data?.id : 0
         setTimeout(() => {
           let data = []
           if (id > 200) {
@@ -389,6 +391,7 @@ export default {
     itemDragEnd(node) {
       console.log(node.model.text + ' drag end !')
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     itemDropBefore(node, item, draggedItem, e) {
       if (!draggedItem) {
         item.addChild({

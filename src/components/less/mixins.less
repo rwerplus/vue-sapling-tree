@@ -1,39 +1,39 @@
-@mixin tree-theme($base-height, $image, $image-height) {
-  $correction: ($image-height - $base-height) / 2;
+.tree-theme (@base-height, @image, @image-height) {
+  @correction: (@image-height - @base-height) / 2;
 
   .tree-node {
-    min-height: $base-height;
-    line-height: $base-height;
-    margin-left: $base-height + 6;
-    min-width: $base-height;
+    min-height: @base-height;
+    line-height: @base-height;
+    margin-left: @base-height + 6;
+    min-width: @base-height;
   }
   .tree-anchor {
-    line-height: $base-height;
-    height: $base-height;
+    line-height: @base-height;
+    height: @base-height;
   }
   .tree-icon {
-    width: $base-height;
-    height: $base-height;
-    line-height: $base-height;
+    width: @base-height;
+    height: @base-height;
+    line-height: @base-height;
   }
   .tree-icon:empty {
-    width: $base-height;
-    height: $base-height;
-    line-height: $base-height;
+    width: @base-height;
+    height: @base-height;
+    line-height: @base-height;
   }
   &.tree-rtl .tree-node {
-    margin-right: $base-height;
+    margin-right: @base-height;
   }
   .tree-wholerow {
-    height: $base-height;
+    height: @base-height;
   }
 
   .tree-node,
   .tree-icon {
-    background-image: url('${image}');
+    background-image: url('@{image}');
   }
   .tree-node {
-    background-position: -($image-height * 9 + $correction) -$correction;
+    background-position: -(@image-height * 9 + @correction) -@correction;
     background-repeat: repeat-y;
   }
   .tree-last {
@@ -41,17 +41,17 @@
   }
 
   .tree-open > .tree-ocl {
-    background-position: -($image-height * 4 + $correction) -$correction;
+    background-position: -(@image-height * 4 + @correction) -@correction;
   }
   .tree-closed > .tree-ocl {
-    background-position: -($image-height * 3 + $correction) -$correction;
+    background-position: -(@image-height * 3 + @correction) -@correction;
   }
   .tree-leaf > .tree-ocl {
-    background-position: -($image-height * 2 + $correction) -$correction;
+    background-position: -(@image-height * 2 + @correction) -@correction;
   }
 
   .tree-themeicon {
-    background-position: -($image-height * 8 + $correction) -$correction;
+    background-position: -(@image-height * 8 + @correction) -@correction;
   }
 
   > .tree-no-dots {
@@ -60,10 +60,10 @@
       background: transparent;
     }
     .tree-open > .tree-ocl {
-      background-position: -($image-height * 1 + $correction) -$correction;
+      background-position: -(@image-height * 1 + @correction) -@correction;
     }
     .tree-closed > .tree-ocl {
-      background-position: -$correction -$correction;
+      background-position: -@correction -@correction;
     }
   }
 
@@ -78,26 +78,26 @@
   }
 
   .tree-checkbox {
-    background-position: -($image-height * 5 + $correction) -$correction;
+    background-position: -(@image-height * 5 + @correction) -@correction;
     &:hover {
-      background-position: -($image-height * 5 + $correction) -($image-height * 1 + $correction);
+      background-position: -(@image-height * 5 + @correction) -(@image-height * 1 + @correction);
     }
   }
 
   &.tree-checkbox-selection .tree-selected,
   .tree-checked {
     > .tree-checkbox {
-      background-position: -($image-height * 7 + $correction) -$correction;
+      background-position: -(@image-height * 7 + @correction) -@correction;
       &:hover {
-        background-position: -($image-height * 7 + $correction) -($image-height * 1 + $correction);
+        background-position: -(@image-height * 7 + @correction) -(@image-height * 1 + @correction);
       }
     }
   }
   .tree-anchor {
     > .tree-undetermined {
-      background-position: -($image-height * 6 + $correction) -$correction;
+      background-position: -(@image-height * 6 + @correction) -@correction;
       &:hover {
-        background-position: -($image-height * 6 + $correction) -($image-height * 1 + $correction);
+        background-position: -(@image-height * 6 + @correction) -(@image-height * 1 + @correction);
       }
     }
   }
@@ -109,7 +109,7 @@
   }
 
   > .tree-striped {
-    background-size: auto ($base-height * 2);
+    background-size: auto (@base-height * 2);
   }
 
   &.tree-rtl {
@@ -122,13 +122,13 @@
       background: transparent;
     }
     .tree-open > .tree-ocl {
-      background-position: -($image-height * 4 + $correction) -($image-height * 1 + $correction);
+      background-position: -(@image-height * 4 + @correction) -(@image-height * 1 + @correction);
     }
     .tree-closed > .tree-ocl {
-      background-position: -($image-height * 3 + $correction) -($image-height * 1 + $correction);
+      background-position: -(@image-height * 3 + @correction) -(@image-height * 1 + @correction);
     }
     .tree-leaf > .tree-ocl {
-      background-position: -($image-height * 2 + $correction) -($image-height * 1 + $correction);
+      background-position: -(@image-height * 2 + @correction) -(@image-height * 1 + @correction);
     }
     > .tree-no-dots {
       .tree-node,
@@ -136,10 +136,10 @@
         background: transparent;
       }
       .tree-open > .tree-ocl {
-        background-position: -($image-height * 1 + $correction) -($image-height * 1 + $correction);
+        background-position: -(@image-height * 1 + @correction) -(@image-height * 1 + @correction);
       }
       .tree-closed > .tree-ocl {
-        background-position: -$correction -($image-height * 1 + $correction);
+        background-position: -@correction -(@image-height * 1 + @correction);
       }
     }
   }
@@ -159,10 +159,10 @@
   }
 
   .tree-file {
-    background: url('${image}') -($image-height * 3 + $correction) -($image-height * 2 + $correction) no-repeat;
+    background: url('@{image}') -(@image-height * 3 + @correction) -(@image-height * 2 + @correction) no-repeat;
   }
   .tree-folder {
-    background: url('${image}') -($image-height * 8 + $correction) -($correction) no-repeat;
+    background: url('@{image}') -(@image-height * 8 + @correction) -(@correction) no-repeat;
   }
 
   > .tree-container-ul > .tree-node {
@@ -176,11 +176,11 @@
   }
   // base height + PADDINGS!
   .tree-ellipsis .tree-anchor {
-    width: calc(100% - (#{$base-height} + 5px));
+    width: 100% - (@base-height + 5px);
     text-overflow: ellipsis;
     overflow: hidden;
   }
   .tree-ellipsis.tree-no-icons .tree-anchor {
-    width: calc(100% - 5px);
+    width: 100% - (@base-height + 5px);
   }
 }
