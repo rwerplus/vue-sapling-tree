@@ -13,7 +13,7 @@
     "url": "https://github.com/rwerplus/vue-sapling-tree.git"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com/"
   },
   "bugs": {
     "url": "https://github.com/rwerplus/vue-sapling-tree/issues"
