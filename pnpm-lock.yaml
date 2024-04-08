@@ -41,7 +41,7 @@ devDependencies:
     specifier: ^8.0.0
     version: 8.0.3
   less:
-    specifier: ^3.13.1
+    specifier: 3.13.1
     version: 3.13.1
   lint-staged:
     specifier: ^13.1.0
