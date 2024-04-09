@@ -19,7 +19,7 @@ jobs:
         id: release_tag
         uses: RwerPlus/release-tag@conventional
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GT_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           preset: angular # Use conventional-changelog preset
